@@ -1,4 +1,4 @@
-package ztlib
+package zio
 
 import (
 	"errors"
