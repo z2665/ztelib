@@ -1,6 +1,7 @@
 package zlog
 
 import (
+	"fmt"
 	_ "fmt"
 	"io"
 	"sync"
@@ -25,4 +26,14 @@ func (this *Zlog) Resize(newsize int64) {
 }
 func (this *Zlog) GetBufSize() int64 {
 	return this.bufsize
+}
+
+func (this *Zlog) Notice(v ...interface{}) {
+	s := fmt.Sprint(v...)
+	this.mutex.Lock()
+	defer this.mutex.Unlock()
+	this.buf = this.buf[:0] //清空
+	this.buf = append(this.buf, "Notice: "...)
+	this.buf = append(this.buf, s...)
+	this.wt.Write(this.buf)
 }
