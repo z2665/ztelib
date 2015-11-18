@@ -30,10 +30,13 @@ func (this *Zlog) GetBufSize() int64 {
 
 func (this *Zlog) Notice(v ...interface{}) {
 	s := fmt.Sprint(v...)
+	this.logdo(s, "Notice: ")
+}
+func (this *Zlog) logdo(s string, title string) {
 	this.mutex.Lock()
 	defer this.mutex.Unlock()
 	this.buf = this.buf[:0] //清空
-	this.buf = append(this.buf, "Notice: "...)
+	this.buf = append(this.buf, title...)
 	this.buf = append(this.buf, s...)
 	this.wt.Write(this.buf)
 }
